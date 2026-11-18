@@ -1,0 +1,8 @@
+Form Title,Customer Feedback Survey
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Customer Feedback,Text (Short Answer),Min 3 chars,Full Name,Yes,,
+1,Customer Feedback,Email Input,Valid email,Email Address,Yes,,
+1,Customer Feedback,Multiple Choice,,How did you hear about us?,Yes,Google Search|Social Media|Friend/Family|Other,
+1,Customer Feedback,Rating Scale (Stars),1-5 stars,Rate your overall experience,Yes,,
+1,Customer Feedback,Paragraph Text (Long),,Any additional comments?,No,,
+1,Customer Feedback,NPS Scale,0-10,How likely are you to recommend us?,Yes,,

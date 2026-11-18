@@ -1,0 +1,786 @@
+<title>MS Forms Automation</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&display=swap">
+
+<style>
+  /* Layout: vertical presentation — sections as full-width cards, technical depth with clear hierarchy */
+  :root {
+    --bg: #fafaf8;
+    --fg: #1c1c1e;
+    --surface: #ffffff;
+    --surface-alt: #f0efeb;
+    --border: #ddd9d0;
+    --accent: #2d5a27;
+    --accent-light: #e8f0e6;
+    --muted: #7a756d;
+    --code-bg: #f5f4f0;
+    --code-fg: #3c3836;
+    --heading: #111110;
+    --tag-bg: #e8f0e6;
+    --tag-fg: #2d5a27;
+    --font-display: 'Fraunces', Georgia, serif;
+    --font-body: 'DM Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    --font-mono: 'DM Mono', 'Consolas', monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #141413;
+      --fg: #d4d2cc;
+      --surface: #1e1e1c;
+      --surface-alt: #252523;
+      --border: #3a3835;
+      --accent: #6aad60;
+      --accent-light: #1e2b1c;
+      --muted: #908b83;
+      --code-bg: #1a1a18;
+      --code-fg: #c8c5be;
+      --heading: #eeece8;
+      --tag-bg: #1e2b1c;
+      --tag-fg: #6aad60;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #141413;
+    --fg: #d4d2cc;
+    --surface: #1e1e1c;
+    --surface-alt: #252523;
+    --border: #3a3835;
+    --accent: #6aad60;
+    --accent-light: #1e2b1c;
+    --muted: #908b83;
+    --code-bg: #1a1a18;
+    --code-fg: #c8c5be;
+    --heading: #eeece8;
+    --tag-bg: #1e2b1c;
+    --tag-fg: #6aad60;
+    color-scheme: dark;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    line-height: 1.7;
+    margin: 0;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .page { max-width: 860px; margin: 0 auto; padding-bottom: 80px; }
+
+  /* Hero */
+  .hero {
+    padding: 64px 0 48px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+  .hero-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    color: var(--accent);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 700;
+    color: var(--heading);
+    line-height: 1.15;
+    margin: 0 0 20px;
+    text-wrap: balance;
+  }
+  .hero-sub {
+    font-size: 1.1rem;
+    color: var(--muted);
+    max-width: 600px;
+    line-height: 1.6;
+  }
+  .tech-strip {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 24px;
+  }
+  .tech-tag {
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+    padding: 4px 12px;
+    border-radius: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* Sections */
+  section { margin-bottom: 56px; }
+  .section-num {
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    color: var(--accent);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: var(--font-display);
+    font-size: 1.6rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin: 0 0 20px;
+    line-height: 1.25;
+    text-wrap: balance;
+  }
+  h3 {
+    font-family: var(--font-body);
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin: 28px 0 12px;
+  }
+
+  p { margin: 0 0 14px; font-size: 0.95rem; }
+  ul, ol { padding-left: 20px; margin: 0 0 16px; font-size: 0.95rem; }
+  li { margin-bottom: 8px; }
+
+  /* Code */
+  code {
+    font-family: var(--font-mono);
+    font-size: 0.82em;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    padding: 2px 6px;
+    border-radius: 3px;
+  }
+  pre {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    background: var(--code-bg);
+    color: var(--code-fg);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 16px 18px;
+    overflow-x: auto;
+    margin: 14px 0 18px;
+    line-height: 1.55;
+  }
+
+  /* Cards */
+  .card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px;
+  }
+  .card-title {
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    font-weight: 500;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+  .card p { font-size: 0.88rem; margin: 0; color: var(--fg); line-height: 1.55; }
+
+  /* Flow */
+  .flow { display: flex; flex-direction: column; gap: 0; margin: 20px 0; }
+  .flow-step {
+    display: flex;
+    gap: 16px;
+    padding: 16px 0;
+    border-left: 2px solid var(--border);
+    margin-left: 15px;
+    padding-left: 24px;
+    position: relative;
+  }
+  .flow-step::before {
+    content: attr(data-step);
+    position: absolute;
+    left: -16px;
+    top: 14px;
+    width: 30px;
+    height: 30px;
+    background: var(--accent);
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .flow-step:last-child { border-left-color: transparent; }
+  .flow-body { min-width: 0; flex: 1; }
+  .flow-body strong { color: var(--heading); }
+  .flow-body p { font-size: 0.9rem; margin: 4px 0 0; }
+
+  /* Concept cards */
+  .concept {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 14px 0;
+  }
+  .concept-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+  }
+  .concept-name {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--heading);
+  }
+  .concept-tag {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    background: var(--tag-bg);
+    color: var(--tag-fg);
+    padding: 3px 10px;
+    border-radius: 3px;
+    letter-spacing: 0.03em;
+  }
+  .concept p { font-size: 0.88rem; margin: 0 0 10px; }
+  .concept p:last-child { margin: 0; }
+
+  /* Tables */
+  .table-wrap { overflow-x: auto; margin: 14px 0 20px; }
+  table { width: 100%; border-collapse: collapse; font-size: 0.88rem; }
+  th {
+    text-align: left;
+    font-weight: 600;
+    color: var(--heading);
+    padding: 10px 12px;
+    border-bottom: 2px solid var(--border);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    font-family: var(--font-mono);
+  }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: top;
+  }
+  td code { font-size: 0.8em; white-space: nowrap; }
+
+  /* Callout */
+  .callout {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+    padding: 14px 18px;
+    border-radius: 0 8px 8px 0;
+    margin: 18px 0;
+    font-size: 0.9rem;
+  }
+
+  /* Diagram */
+  .diagram {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 20px 24px;
+    margin: 20px 0;
+    font-family: var(--font-mono);
+    font-size: 0.75rem;
+    line-height: 1.7;
+    overflow-x: auto;
+    white-space: pre;
+    color: var(--code-fg);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .hero { padding: 40px 0 32px; }
+    .hero h1 { font-size: 1.75rem; }
+    h2 { font-size: 1.35rem; }
+    .card-grid { grid-template-columns: 1fr; }
+    pre { font-size: 0.73rem; padding: 12px 14px; }
+    .flow-step { margin-left: 12px; padding-left: 20px; }
+  }
+</style>
+
+<div class="page">
+
+<div class="hero">
+  <div class="hero-eyebrow">Capstone Project Presentation</div>
+  <h1>MS Forms Automation</h1>
+  <p class="hero-sub">End-to-end automation of Microsoft Forms — from CSV template to live form creation, validation testing, and AI tool integration — built from scratch using Playwright and TypeScript.</p>
+  <div class="tech-strip">
+    <span class="tech-tag">TypeScript</span>
+    <span class="tech-tag">Playwright</span>
+    <span class="tech-tag">Microsoft Edge</span>
+    <span class="tech-tag">Page Object Model</span>
+    <span class="tech-tag">MCP Server</span>
+    <span class="tech-tag">Node.js</span>
+  </div>
+</div>
+
+<!-- ============ OBJECTIVE ============ -->
+<section>
+  <div class="section-num">01 / Objective</div>
+  <h2>Automating Microsoft Forms from Scratch</h2>
+  <p>The goal of this project is to <strong>completely automate</strong> the creation and testing of Microsoft Forms using browser automation. Instead of manually clicking through the MS Forms editor to create forms one question at a time, this system:</p>
+  <ul>
+    <li>Reads a <strong>CSV spreadsheet</strong> that defines the entire form structure (questions, types, options, validations, branching)</li>
+    <li>Opens a <strong>real Microsoft Edge browser</strong> with your logged-in Microsoft account</li>
+    <li>Creates the form automatically — adding questions, configuring restrictions, setting up branching between pages</li>
+    <li>Extracts the shareable <strong>response URL</strong></li>
+    <li>Tests the created form by filling every field and submitting it</li>
+    <li>Exposes the entire pipeline as <strong>MCP tools</strong> so an AI assistant can trigger it</li>
+  </ul>
+  <div class="callout">
+    <strong>Why automate this?</strong> Creating complex forms with 20+ questions, input validations, and branching logic manually takes 30-60 minutes per form. This automation does it in under 3 minutes, with zero human error, and validates the form works correctly.
+  </div>
+</section>
+
+<!-- ============ WORKFLOW ============ -->
+<section>
+  <div class="section-num">02 / Workflow</div>
+  <h2>How the Project Was Built</h2>
+  <p>The project was developed incrementally, solving one challenge at a time:</p>
+
+  <div class="flow">
+    <div class="flow-step" data-step="1">
+      <div class="flow-body">
+        <strong>CSV Parser and Data Model</strong>
+        <p>Designed the CSV format (8 columns: Page, Section, Type, Validation, Question, Required, Options, Branch). Built a parser that converts rows into typed TypeScript objects (<code>FormField</code>, <code>FormTemplate</code>, <code>BranchPlan</code>).</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="2">
+      <div class="flow-body">
+        <strong>Browser Setup with Persistent Profile</strong>
+        <p>Configured Playwright to launch Microsoft Edge with a persistent browser profile. This saves your login session so you don't have to log in to Microsoft every time the automation runs.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="3">
+      <div class="flow-body">
+        <strong>Form Builder (Page Object Model)</strong>
+        <p>Built <code>FormEditorPage</code> — the core automation engine. Handles clicking "New Form", adding each question type, typing labels, filling options, toggling Required, and navigating the MS Forms editor.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="4">
+      <div class="flow-body">
+        <strong>Restriction and Validation System</strong>
+        <p>Added automatic field validation: email fields get min 5 chars, phone fields get max 10 chars, name fields get min 3 chars. Also supports custom restrictions from the CSV. Uses <strong>regex patterns</strong> to validate CSV data quality.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="5">
+      <div class="flow-body">
+        <strong>Multi-Page Sections and Branching</strong>
+        <p>Built <code>BranchConfigurator</code> to handle conditional navigation between pages. Supports expressions like <code>rating >= 4</code> to route users to different sections based on their answers.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="6">
+      <div class="flow-body">
+        <strong>Title Setting via API Interception</strong>
+        <p>The MS Forms editor has no editable title field. Solved this by intercepting the page's own API requests to capture authentication headers, then sending a PATCH request to the MS Forms OData API.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="7">
+      <div class="flow-body">
+        <strong>Test Suite with Playwright Assertions</strong>
+        <p>Built a complete test framework: smoke tests, functional tests per input type, end-to-end tests, and performance tests. Each test uses real Playwright assertions (<code>expect</code>) to verify form behavior.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="8">
+      <div class="flow-body">
+        <strong>Web UI and MCP Server</strong>
+        <p>Added a drag-and-drop web interface for CSV upload, and an MCP server that exposes the automation as AI-callable tools.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ ARCHITECTURE ============ -->
+<section>
+  <div class="section-num">03 / Architecture</div>
+  <h2>Project Structure and Data Flow</h2>
+
+  <div class="diagram">CSV File (samples/*.csv)
+    |
+    v
+csvParser.ts  ------>  FormTemplate { title, fields[], branchPlan }
+    |                       |
+    |                       +-- FormField { label, fieldType, options, validation, page }
+    |                       +-- BranchPlan { orderedSections[], branchRules[] }
+    |
+    v
+FormEditorPage.ts  (Page Object for MS Forms Editor)
+    |
+    |-- navigateAndWaitForLogin()    --> opens forms.cloud.microsoft
+    |-- createNewForm(title)         --> clicks New Form, sets title via API
+    |-- addAllQuestions(template)     --> loops fields, adds each question
+    |-- configureRestrictions(field)  --> sets input validations
+    |-- BranchConfigurator           --> sets up branching rules
+    |-- getResponseUrl()             --> extracts shareable link
+    |
+    v
+FormResponsePage.ts  (Page Object for Response Page)
+    |
+    |-- testAllFields(fields)        --> fills each field, verifies with expect()
+    |-- submitForm()                 --> clicks submit, checks thank-you message
+    |
+    v
+Test Reports + generated-forms/forms-log.json</div>
+
+  <h3>Key Files</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">builder/FormEditorPage.ts</div>
+      <p>Main form builder. Uses Page Object Model with methods for every editor action. Handles all question types, restrictions, and URL extraction.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">builder/BranchConfigurator.ts</div>
+      <p>Configures branching rules after all sections exist. Opens the branching view and sets conditional "Next" targets for each answer.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">tester/FormResponsePage.ts</div>
+      <p>Tests the created form. Fills text, choice, date, rating, NPS fields. Handles multi-page navigation and branching.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">csv/csvParser.ts</div>
+      <p>Parses CSV into typed objects. Groups fields into sections, resolves branch conditions, normalizes labels with regex.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">csv/csvValidator.ts</div>
+      <p>Validates CSV format with regex patterns. Checks column headers, field types, option formats, and branch expressions.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">config/forms.config.ts</div>
+      <p>Central configuration: base URL, all timeout values, field type mappings, and browser profile directory path.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">fixtures/formFixture.ts</div>
+      <p>Custom Playwright fixtures providing shared test setup: persistent browser context, page objects, and parsed template.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">server.ts</div>
+      <p>Web UI at localhost:8080. Accepts CSV upload, runs automation in background, returns form links when done.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PLAYWRIGHT CONCEPTS ============ -->
+<section>
+  <div class="section-num">04 / Playwright Concepts</div>
+  <h2>What I Learned and Used</h2>
+  <p>Every concept below was learned and applied hands-on in this project. Here is what each means and exactly where it is used:</p>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Async / Await</span>
+      <span class="concept-tag">Every file</span>
+    </div>
+    <p><strong>What it means:</strong> JavaScript is single-threaded. When you do something that takes time (clicking a button, waiting for a page to load, making an API call), the code needs to <em>wait</em> without blocking everything else. <code>async</code> marks a function that contains asynchronous operations. <code>await</code> pauses execution until the operation completes.</p>
+    <p><strong>Where I used it:</strong> Every Playwright interaction is async. For example, <code>await page.goto(url)</code> waits for the page to load, <code>await input.fill('text')</code> waits for the text to be typed, <code>await expect(element).toBeVisible()</code> waits for an element to appear.</p>
+    <pre>async addTextQuestion(field: FormField): Promise&lt;void&gt; {
+  await this.openQuestionPalette();      // wait for palette to open
+  await this.clickQuestionType('Text');  // wait for click
+  await this.typeQuestionTitle(field);   // wait for typing
+  await this.toggleRequired(field);      // wait for toggle
+}</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Page Object Model (POM)</span>
+      <span class="concept-tag">builder/ and tester/</span>
+    </div>
+    <p><strong>What it means:</strong> A design pattern where each web page gets its own class. The class has methods for every action you can take on that page. Tests call these methods instead of directly interacting with elements. This separates "what to do" from "how to do it."</p>
+    <p><strong>Where I used it:</strong> <code>FormEditorPage</code> is the Page Object for the MS Forms editor. <code>FormResponsePage</code> is the Page Object for the response page. When MS Forms changes its UI, I update the Page Object — tests stay the same.</p>
+    <pre>// Page Object encapsulates all editor interactions
+class FormEditorPage {
+  constructor(private page: Page) {}
+
+  async createNewForm(title: string) { ... }
+  async addTextQuestion(field: FormField) { ... }
+  async getResponseUrl(): Promise&lt;string&gt; { ... }
+}
+
+// Test uses the Page Object — clean and readable
+test('create form', async ({ editorPage }) => {
+  await editorPage.createNewForm('My Form');
+  await editorPage.addTextQuestion(nameField);
+});</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Fixtures</span>
+      <span class="concept-tag">fixtures/formFixture.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Fixtures are Playwright's way of sharing setup and teardown code across tests. Instead of repeating browser launch, page creation, and CSV parsing in every test, you define it once in a fixture. Each test declares which fixtures it needs, and Playwright provides them.</p>
+    <p><strong>Where I used it:</strong> Custom fixtures for <code>persistentContext</code> (Edge with login), <code>editorPage</code> (FormEditorPage instance), <code>responsePage</code> (FormResponsePage instance), <code>template</code> (parsed CSV), and <code>steps</code> (step tracker).</p>
+    <pre>export const test = base.extend&lt;FormFixtures&gt;({
+  persistentContext: async ({}, use) => {
+    const { context } = await launchPersistentEdge();
+    await use(context);          // provide to tests
+    await context.close();       // cleanup after tests
+  },
+  editorPage: async ({ persistentContext }, use) => {
+    const page = persistentContext.pages()[0];
+    await use(new FormEditorPage(page));
+  },
+});</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Explicit Waits</span>
+      <span class="concept-tag">FormEditorPage.ts, FormResponsePage.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Telling Playwright to wait for a specific condition — an element becomes visible, a URL changes, text appears. Unlike implicit waits (a fixed sleep), explicit waits are <em>condition-based</em> and finish as soon as the condition is met.</p>
+    <p><strong>Where I used it:</strong> <code>waitFor({ state: 'visible' })</code> on form fields before interacting. <code>waitForURL()</code> after login redirects. <code>waitForLoadState('networkidle')</code> after navigation.</p>
+    <pre>// Explicit wait: finishes as soon as the input appears
+await input.waitFor({ state: 'visible', timeout: 15000 });
+
+// Explicit wait: wait for login redirect to complete
+await page.waitForURL('**/forms.cloud.microsoft/**');
+
+// vs. Implicit wait: always waits full duration (avoid this)
+await page.waitForTimeout(5000);  // sleeps 5s even if ready</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Assertions with expect()</span>
+      <span class="concept-tag">tester/FormResponsePage.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Playwright's <code>expect()</code> is an auto-retrying assertion. When you write <code>expect(element).toBeVisible()</code>, it doesn't just check once — it keeps retrying until the element is visible or the timeout expires. This handles dynamic pages where elements appear asynchronously.</p>
+    <p><strong>Where I used it:</strong> Every field test verifies its input was accepted: <code>toHaveValue()</code> for text fields, <code>toBeChecked()</code> for radio/checkbox, <code>toBeVisible()</code> for elements.</p>
+    <pre>// Auto-retrying: keeps checking until value matches or timeout
+await expect(input).toHaveValue('test@example.com');
+
+// With custom error message for clear test reports
+await expect(heading, 'Form heading should be visible').toBeVisible();
+
+// Verifying interaction succeeded
+await radios.first().click({ force: true });
+await expect(radios.first()).toBeChecked();</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Selectors and Locators</span>
+      <span class="concept-tag">builder/selectors.ts, tester/selectors.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Locators are how Playwright finds elements on the page. You can use CSS selectors (<code>[data-automation-id="questionItem"]</code>), role-based selectors (<code>getByRole('button')</code>), text selectors (<code>getByText('Submit')</code>), or XPath. Centralized selector files make maintenance easier.</p>
+    <p><strong>Where I used it:</strong> Two selector files — one for the editor page, one for the response page. All selectors are defined as constants and used throughout the Page Objects.</p>
+    <pre>// Centralized selectors — update here when MS Forms changes
+export const RESPONSE = {
+  questionContainer: '[data-automation-id="questionItem"]',
+  textInput: '[data-automation-id="textInput"]',
+  submitButton: 'button[data-automation-id="submitButton"]',
+  nextButton: 'button[data-automation-id="nextButton"]',
+};
+
+// Used in Page Object
+findQuestionContainer(label: string): Locator {
+  return this.page.locator(RESPONSE.questionContainer, { hasText: label });
+}</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Persistent Browser Context</span>
+      <span class="concept-tag">fixtures/browserSetup.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Playwright can launch a browser with a saved user profile directory. This preserves cookies, login sessions, and browser state between runs. Essential for MS Forms because it requires Microsoft authentication.</p>
+    <p><strong>Where I used it:</strong> <code>launchPersistentEdge()</code> opens Edge with a profile stored at <code>%LOCALAPPDATA%\ms_forms_automation\browser_profile</code>. Once you log in the first time, all subsequent runs reuse that session.</p>
+    <pre>const context = await chromium.launchPersistentContext(
+  BROWSER_PROFILE_DIR,
+  {
+    channel: 'msedge',
+    headless: false,
+    viewport: { width: 1280, height: 800 },
+  }
+);</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Request Interception</span>
+      <span class="concept-tag">builder/FormEditorPage.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Playwright lets you listen to every network request the page makes with <code>page.on('request')</code>. You can read request URLs, headers, and bodies. This is powerful for capturing authentication tokens the page's own JavaScript sends.</p>
+    <p><strong>Where I used it:</strong> To capture the anti-forgery token for the title API. The MS Forms page makes API calls that include auth headers. We intercept those requests, extract the headers, then reuse them in our own PATCH request.</p>
+    <pre>page.on('request', (request) => {
+  if (request.url().includes('/formapi/api/')) {
+    capturedHeaders = request.headers();  // grab auth tokens
+    apiBaseUrl = extractBaseUrl(request.url());
+  }
+});
+await page.reload();  // triggers API calls we can intercept</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Test Organization</span>
+      <span class="concept-tag">tests/ folder</span>
+    </div>
+    <p><strong>What it means:</strong> Tests are organized by purpose: smoke tests (quick sanity checks), functional tests (per-feature), end-to-end tests (full workflow), and performance tests (timing and load). Playwright runs them with <code>describe</code> blocks for grouping and the config controls parallelism, retries, and reporters.</p>
+    <p><strong>Where I used it:</strong></p>
+    <div class="table-wrap">
+    <table>
+      <tr><th>Test Type</th><th>File</th><th>Purpose</th></tr>
+      <tr><td>Smoke</td><td><code>smoke/formLoads.spec.ts</code></td><td>Verify form loads and has questions</td></tr>
+      <tr><td>Functional</td><td><code>functional/inputTypes.spec.ts</code></td><td>Test each field type individually</td></tr>
+      <tr><td>E2E</td><td><code>e2e/happyPath.spec.ts</code></td><td>Build + fill + submit full pipeline</td></tr>
+      <tr><td>Performance</td><td><code>performance/formLoadPerf.spec.ts</code></td><td>Page load times and interaction speed</td></tr>
+      <tr><td>Build</td><td><code>buildOnly.spec.ts</code></td><td>Just create a form from CSV</td></tr>
+      <tr><td>Existing</td><td><code>testExisting.spec.ts</code></td><td>Test a form at a given URL</td></tr>
+    </table>
+    </div>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Regular Expressions</span>
+      <span class="concept-tag">csv/csvValidator.ts, csv/csvParser.ts</span>
+    </div>
+    <p><strong>What it means:</strong> Regex patterns match text against rules. Used for validating data formats, extracting parts of strings, and cleaning input. JavaScript supports regex natively with <code>/pattern/flags</code> syntax.</p>
+    <p><strong>Where I used it:</strong> Validating branch conditions (<code>/^(.+?)\s*(>=|<=|>|<|==|!=)\s*(.+)$/</code>), checking option format, validating question labels, normalizing whitespace in field names.</p>
+    <pre>// Branch condition format: "question_slug>=value"
+const BRANCH_REGEX = /^(.+?)\s*(>=|<=|>|<|==|!=|=)\s*(.+)$/;
+
+// Validate option format (semicolon-separated, no empty segments)
+const OPTIONS_REGEX = /^[^;]+(;[^;]+)*$/;
+
+// Validate question labels (letters, numbers, spaces, basic punctuation)
+const LABEL_REGEX = /^[A-Za-z][A-Za-z0-9\s\-_'().?!,]+$/;</pre>
+  </div>
+
+  <div class="concept">
+    <div class="concept-header">
+      <span class="concept-name">Performance Testing</span>
+      <span class="concept-tag">tests/performance/</span>
+    </div>
+    <p><strong>What it means:</strong> Measuring how fast the application responds. Page load time, interaction responsiveness, and resource usage are all performance metrics. Performance tests set thresholds and fail if the app is too slow.</p>
+    <p><strong>Where I used it:</strong> A performance test that loads the form multiple times, measures each load, and asserts all loads are under 10 seconds. Also times individual field interactions to verify they respond within 500ms.</p>
+    <pre>const start = Date.now();
+await page.goto(responseUrl, { waitUntil: 'networkidle' });
+const loadTime = Date.now() - start;
+
+expect(loadTime, 'Page should load within 10s').toBeLessThan(10000);
+console.log(`Load time: ${loadTime}ms`);</pre>
+  </div>
+</section>
+
+<!-- ============ MCP SERVER ============ -->
+<section>
+  <div class="section-num">05 / MCP Server</div>
+  <h2>AI Tool Integration</h2>
+
+  <h3>What is MCP?</h3>
+  <p><strong>MCP (Model Context Protocol)</strong> is a standard created by Anthropic for connecting AI assistants to external tools and data. Think of it as a USB port for AI — a standard interface so any AI assistant can use any tool, without custom integration code for each combination.</p>
+
+  <h3>Three Core Concepts</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">Tools</div>
+      <p>Functions the AI can call. Each has a name, description, and JSON Schema defining its inputs. Example: <code>create_form</code> accepts a CSV path and builds a form.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Resources</div>
+      <p>Read-only data the AI can access. Example: <code>forms://templates</code> returns the list of available CSV templates without modifying anything.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">Transport</div>
+      <p>How AI communicates with the server. We use <code>StdioServerTransport</code> — JSON-RPC messages over standard input/output (stdin/stdout).</p>
+    </div>
+  </div>
+
+  <h3>How It Works</h3>
+  <div class="flow">
+    <div class="flow-step" data-step="1">
+      <div class="flow-body">
+        <strong>Claude Code reads .mcp.json</strong>
+        <p>The config file tells Claude Code how to start the MCP server: <code>npx tsx mcp/formTestServer.ts</code></p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="2">
+      <div class="flow-body">
+        <strong>Server starts and registers tools</strong>
+        <p><code>formTestServer.ts</code> creates the MCP server, registers all 6 tools from <code>tools.ts</code>, and starts listening via stdin/stdout.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="3">
+      <div class="flow-body">
+        <strong>AI discovers available tools</strong>
+        <p>Claude sends a <code>tools/list</code> JSON-RPC request. The server responds with all tool names, descriptions, and input schemas.</p>
+      </div>
+    </div>
+    <div class="flow-step" data-step="4">
+      <div class="flow-body">
+        <strong>AI calls a tool</strong>
+        <p>Claude sends <code>tools/call</code> with the tool name and arguments. The handler in <code>handlers.ts</code> executes the action (runs Playwright, reads files, etc.) and returns the result.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>Our 6 MCP Tools</h3>
+  <div class="table-wrap">
+  <table>
+    <tr><th>Tool</th><th>What It Does</th><th>Implementation</th></tr>
+    <tr><td><code>list_csv_templates</code></td><td>Lists CSV files in samples/</td><td>Reads directory, parses each CSV for metadata</td></tr>
+    <tr><td><code>validate_csv</code></td><td>Validates CSV format</td><td>Calls <code>validateFormCsv()</code> with regex checks</td></tr>
+    <tr><td><code>create_form</code></td><td>Builds a form from CSV</td><td>Runs <code>npx playwright test tests/buildOnly.spec.ts</code></td></tr>
+    <tr><td><code>test_form</code></td><td>Tests a form at a URL</td><td>Runs <code>npx playwright test tests/testExisting.spec.ts</code></td></tr>
+    <tr><td><code>get_form_links</code></td><td>Returns saved form links</td><td>Reads <code>generated-forms/forms-log.json</code></td></tr>
+    <tr><td><code>get_test_report</code></td><td>Returns latest test results</td><td>Reads latest JSON from <code>test-results/</code></td></tr>
+  </table>
+  </div>
+
+  <h3>Architecture (3 Files)</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-title">mcp/tools.ts</div>
+      <p><strong>Definitions.</strong> JSON Schema for each tool — name, description, required inputs. This is what the AI reads to know what it can do.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">mcp/handlers.ts</div>
+      <p><strong>Implementations.</strong> The actual code that runs when a tool is called. Wraps existing project functions — no duplicate logic.</p>
+    </div>
+    <div class="card">
+      <div class="card-title">mcp/formTestServer.ts</div>
+      <p><strong>Server.</strong> Creates the MCP server with <code>@modelcontextprotocol/sdk</code>, registers tools and resources, starts StdioServerTransport.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ============ COMMANDS ============ -->
+<section>
+  <div class="section-num">06 / Commands Reference</div>
+  <h2>How to Run Everything</h2>
+
+  <div class="table-wrap">
+  <table>
+    <tr><th>Task</th><th>Command</th></tr>
+    <tr><td>Build a form from CSV</td><td><code>$env:CSV_FILE = "samples\event_registration.csv"<br>npx playwright test tests/buildOnly.spec.ts</code></td></tr>
+    <tr><td>Full end-to-end test</td><td><code>$env:CSV_FILE = "samples\event_registration.csv"<br>npx playwright test tests/e2e/happyPath.spec.ts</code></td></tr>
+    <tr><td>Test existing form</td><td><code>$env:RESPONSE_URL = "https://..."<br>npx playwright test tests/testExisting.spec.ts</code></td></tr>
+    <tr><td>Smoke test</td><td><code>$env:RESPONSE_URL = "https://..."<br>npx playwright test tests/smoke/formLoads.spec.ts</code></td></tr>
+    <tr><td>Performance test</td><td><code>$env:RESPONSE_URL = "https://..."<br>npx playwright test tests/performance/formLoadPerf.spec.ts</code></td></tr>
+    <tr><td>Run all tests</td><td><code>npx playwright test</code></td></tr>
+    <tr><td>Type check</td><td><code>npx tsc --noEmit</code></td></tr>
+    <tr><td>View test report</td><td><code>npx playwright show-report</code></td></tr>
+    <tr><td>Start web UI</td><td><code>npm start</code> (opens <code>localhost:8080</code>)</td></tr>
+  </table>
+  </div>
+</section>
+
+</div>

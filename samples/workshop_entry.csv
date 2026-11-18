@@ -1,0 +1,10 @@
+Form Title,Workshop Entry Form
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Participant Info,Text (Short Answer),Min 2 chars,Full Name,Yes,,
+1,Participant Info,Email Input,Valid email,Email Address,Yes,,
+1,Participant Info,Dropdown List,,Department,Yes,Engineering|Marketing|Sales|HR|Finance,
+1,Workshop Preferences,Multiple Choice,,Experience Level,Yes,Beginner|Intermediate|Advanced,
+1,Workshop Preferences,Checkboxes,,Workshop Sessions,Yes,Morning: Intro to AI|Morning: Data Analysis|Afternoon: Hands-On Lab|Afternoon: Group Project,
+1,Workshop Preferences,Ranking/Ordering,,Rank your learning priorities,Yes,Technical Skills|Soft Skills|Leadership|Innovation,
+1,Workshop Preferences,Likert Scale,,Rate the following aspects,Yes,Content Quality|Speaker Knowledge|Venue Facilities|Overall Organization,
+1,Workshop Preferences,Paragraph Text (Long),,What do you hope to learn?,No,,

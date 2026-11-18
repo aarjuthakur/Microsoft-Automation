@@ -1,0 +1,10 @@
+Form Title,Customer Feedback Survey (Branched)
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Contact Info,Text (Short Answer),Min 3 chars,Full Name,Yes,,
+1,Contact Info,Email Input,Valid email,Email Address,Yes,,
+1,Contact Info,Rating Scale (Stars),1-5 stars,Rate your experience,Yes,,
+2,Positive Feedback,Text (Short Answer),,What did you like most?,Yes,,rate_your_experience>=4
+2,Positive Feedback,Paragraph Text (Long),,Tell us more about what went well,No,,rate_your_experience>=4
+2,Improvement Feedback,Text (Short Answer),,What can we improve?,Yes,,rate_your_experience<4
+2,Improvement Feedback,Paragraph Text (Long),,Describe the issues you faced,No,,rate_your_experience<4
+3,Final Questions,NPS Scale,0-10,How likely are you to recommend us?,Yes,,

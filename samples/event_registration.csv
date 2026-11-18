@@ -1,0 +1,10 @@
+Form Title,Event Registration Form,,,,,,
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Personal Info,Text (Short Answer),Min 2 chars,Full Name,Yes,,
+1,Personal Info,Email Input,Valid email,Email Address,Yes,,
+1,Personal Info,Number Input,max 10 numbers,Phone Number,Yes,,
+1,Event Details,Dropdown List,,Select Event,Yes,Tech Conference 2026|Design Workshop|AI Summit|Networking Mixer,
+1,Event Details,Date Picker,,Preferred Date,Yes,,
+1,Event Details,Multiple Choice,,Meal Preference,No,Vegetarian|Non-Vegetarian|Vegan|No Preference,
+1,Event Details,Checkboxes,,Topics of Interest,No,AI/ML|Cloud Computing|DevOps|Security|Web Development,
+1,Event Details,Paragraph Text (Long),,Special Requirements,No,,

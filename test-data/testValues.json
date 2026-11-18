@@ -1,0 +1,27 @@
+{
+  "text": {
+    "default": "Test Input",
+    "email": "test@example.com",
+    "phone": "9876543210",
+    "name": "John Doe",
+    "address": "123 Main Street, Suite 100",
+    "city": "New York",
+    "zip": "10001",
+    "longText": "This is a test response with enough detail to satisfy validation requirements."
+  },
+  "date": {
+    "default": "11/03/2026"
+  },
+  "time": {
+    "default": "14:30"
+  },
+  "rating": {
+    "stars": 4
+  },
+  "nps": {
+    "score": 8
+  },
+  "choice": {
+    "selectIndex": 0
+  }
+}

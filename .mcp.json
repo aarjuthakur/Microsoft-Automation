@@ -1,0 +1,9 @@
+{
+  "mcpServers": {
+    "ms-forms": {
+      "command": "npx",
+      "args": ["tsx", "mcp/formTestServer.ts"],
+      "env": {}
+    }
+  }
+}

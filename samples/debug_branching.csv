@@ -1,0 +1,5 @@
+Form Title,Debug Branching Test
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,General Info,Multiple Choice,,Do you want details?,Yes,Yes|No,
+2,Detail Section,Text (Short Answer),,Please provide details,Yes,,do_you_want_details=Yes
+2,Thank You,Text (Short Answer),,Thanks for your time!,No,,do_you_want_details=No

@@ -1,0 +1,27 @@
+Form Title,Customer Feedback Multi-Page Survey
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Welcome & Demographics,Text (Short Answer),,Welcome! Please share your feedback.,No,,
+1,Welcome & Demographics,Text (Short Answer),Min 2 chars,Full Name,Yes,,
+1,Welcome & Demographics,Email Input,Valid email,Email Address,Yes,,
+1,Welcome & Demographics,Number Input,,Employee Count,No,,
+2,Product Usage,Multiple Choice,,How did you hear about us?,Yes,Social Media|Website|Referral|Friend|Other,
+2,Product Usage,Checkboxes,,Which products do you use?,Yes,Product Alpha|Product Beta|Product Gamma|Product Delta,
+2,Product Usage,Rating Scale (Stars),,Overall Satisfaction,Yes,,
+2,Product Usage,NPS Scale,,How likely are you to recommend us?,Yes,,
+3,Positive Feedback,Paragraph Text (Long),,What do you like most?,Yes,,overall_satisfaction>=4
+3,Positive Feedback,Dropdown List,,Best Feature,Yes,Speed|Quality|Support|Price|UI Design,overall_satisfaction>=4
+3,Positive Feedback,Date Picker,,When did you first purchase?,No,,overall_satisfaction>=4
+3,Improvement Questions,Paragraph Text (Long),,Why are you not satisfied?,Yes,,overall_satisfaction<4
+3,Improvement Questions,Ranking/Ordering,,What areas would improve your experience?,Yes,Response Time|Product Quality|Customer Support|Pricing,overall_satisfaction<4
+3,Improvement Questions,Time Picker,,Best time to contact you?,No,,overall_satisfaction<4
+4,Case Study Path,Multiple Choice,,Would you participate in a case study?,Yes,Yes|No,how_likely_are_you_to_recommend_us>=8
+4,Improvement Path,Paragraph Text (Long),,What would make you rate us a 10?,Yes,,how_likely_are_you_to_recommend_us>=6
+4,Support Path,Checkboxes,,What are your main concerns?,Yes,Slow Response|Bugs|Missing Features|Documentation|Other,how_likely_are_you_to_recommend_us<6
+4,Support Path,File Upload,,Upload a screenshot of the issue,No,,how_likely_are_you_to_recommend_us<6
+4,Support Path,Paragraph Text (Long),,Please describe the issue in detail,Yes,,how_likely_are_you_to_recommend_us<6
+5,Preferred Contact,Dropdown List,,Preferred contact method?,Yes,Email|Phone|Chat|Video Call,follow_up_survey=Yes
+5,Preferred Contact,Time Picker,,Best time to contact?,No,,follow_up_survey=Yes
+5,Preferred Contact,Multiple Choice,,Would you like a follow-up survey?,Yes,Yes|No,follow_up_survey=Yes
+5,Preferred Contact,Ranking/Ordering,,Rank communication channels,Yes,Email|Phone|Chat|Social Media,follow_up_survey=Yes
+5,Preferred Contact,Likert Scale,,Rate our communication quality,Yes,,follow_up_survey=Yes
+6,Thank You,Text (Short Answer),,Thank you for your valuable feedback!,No,,

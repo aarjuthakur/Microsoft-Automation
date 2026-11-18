@@ -1,0 +1,800 @@
+<title>Forms Automation Guide</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Technical documentation — clean, scannable, reference-grade */
+:root {
+  --bg: #fafbfc;
+  --fg: #1a1d23;
+  --fg-muted: #5a6070;
+  --surface: #ffffff;
+  --border: #dce0e8;
+  --accent: #0969da;
+  --accent-bg: #ddf4ff;
+  --code-bg: #f0f3f6;
+  --tag-green: #1a7f37;
+  --tag-green-bg: #dafbe1;
+  --tag-amber: #9a6700;
+  --tag-amber-bg: #fff8c5;
+  --tag-purple: #6639ba;
+  --tag-purple-bg: #eddeff;
+  --heading: var(--fg);
+  --font-body: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'Cascadia Code', 'Consolas', monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0d1117;
+    --fg: #e6edf3;
+    --fg-muted: #8b949e;
+    --surface: #161b22;
+    --border: #30363d;
+    --accent: #58a6ff;
+    --accent-bg: #12283a;
+    --code-bg: #1c2128;
+    --tag-green: #3fb950;
+    --tag-green-bg: #12261e;
+    --tag-amber: #d29922;
+    --tag-amber-bg: #2a2013;
+    --tag-purple: #bc8cff;
+    --tag-purple-bg: #1e1535;
+    --heading: var(--fg);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0d1117;
+  --fg: #e6edf3;
+  --fg-muted: #8b949e;
+  --surface: #161b22;
+  --border: #30363d;
+  --accent: #58a6ff;
+  --accent-bg: #12283a;
+  --code-bg: #1c2128;
+  --tag-green: #3fb950;
+  --tag-green-bg: #12261e;
+  --tag-amber: #d29922;
+  --tag-amber-bg: #2a2013;
+  --tag-purple: #bc8cff;
+  --tag-purple-bg: #1e1535;
+  --heading: var(--fg);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.65;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 2rem;
+}
+
+.wrapper {
+  max-width: 820px;
+  margin: 0 auto;
+}
+
+/* Navigation */
+.toc {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin-bottom: 2.5rem;
+}
+.toc h2 {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--fg-muted);
+  margin-bottom: 0.75rem;
+}
+.toc ol {
+  padding-left: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+.toc li { color: var(--fg-muted); }
+.toc a {
+  color: var(--accent);
+  text-decoration: none;
+  font-weight: 500;
+}
+.toc a:hover { text-decoration: underline; }
+.toc .sub { padding-left: 1.25rem; margin-top: 0.2rem; }
+.toc .sub li { font-size: 0.9em; }
+
+/* Page title */
+.page-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: var(--heading);
+  margin-bottom: 0.5rem;
+  text-wrap: balance;
+  line-height: 1.2;
+}
+.page-subtitle {
+  color: var(--fg-muted);
+  font-size: 1.05rem;
+  margin-bottom: 2.5rem;
+  line-height: 1.5;
+}
+
+/* Section headers */
+.project-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin: 3rem 0 0.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid var(--accent);
+}
+.project-header h1 {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--heading);
+}
+.project-num {
+  background: var(--accent);
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 600;
+  width: 1.7rem;
+  height: 1.7rem;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+h2 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--heading);
+  margin: 2.25rem 0 0.75rem;
+}
+h3 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--heading);
+  margin: 1.5rem 0 0.5rem;
+}
+
+p { margin-bottom: 0.75rem; }
+
+/* Tags / badges */
+.tag {
+  display: inline-block;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  padding: 0.15rem 0.5rem;
+  border-radius: 10px;
+  vertical-align: middle;
+}
+.tag-entry { background: var(--tag-green-bg); color: var(--tag-green); }
+.tag-config { background: var(--tag-amber-bg); color: var(--tag-amber); }
+.tag-test { background: var(--tag-purple-bg); color: var(--tag-purple); }
+.tag-lib { background: var(--accent-bg); color: var(--accent); }
+
+/* Code */
+code {
+  font-family: var(--font-mono);
+  font-size: 0.88em;
+  background: var(--code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+}
+pre {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  overflow-x: auto;
+  margin: 0.75rem 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+/* File tree */
+.file-tree {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem 1.5rem;
+  margin: 0.75rem 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  line-height: 1.8;
+  overflow-x: auto;
+}
+.file-tree .dir { color: var(--accent); font-weight: 500; }
+.file-tree .comment { color: var(--fg-muted); }
+
+/* Cards */
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1rem 1.25rem;
+  margin: 0.75rem 0;
+}
+.card h4 {
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-bottom: 0.4rem;
+}
+.card p { margin-bottom: 0.4rem; }
+.card p:last-child { margin-bottom: 0; }
+
+/* Flow diagrams (text-based) */
+.flow {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.25rem;
+  margin: 0.75rem 0 1rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.88rem;
+}
+.flow-step {
+  background: var(--accent-bg);
+  color: var(--accent);
+  font-weight: 500;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.flow-arrow { color: var(--fg-muted); font-size: 1.1rem; }
+
+/* Command blocks */
+.cmd {
+  background: var(--code-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin: 0.5rem 0 1rem;
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.cmd-prompt { color: var(--fg-muted); user-select: none; flex-shrink: 0; }
+.cmd-text { color: var(--fg); min-width: 0; }
+
+/* Lists */
+ul, ol { padding-left: 1.5rem; margin-bottom: 0.75rem; }
+li { margin-bottom: 0.3rem; }
+
+/* Table */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0.75rem 0 1rem;
+  font-size: 0.9rem;
+}
+th {
+  text-align: left;
+  font-weight: 600;
+  padding: 0.5rem 0.75rem;
+  border-bottom: 2px solid var(--border);
+  color: var(--fg-muted);
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+td {
+  padding: 0.5rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+td code { font-size: 0.82rem; }
+
+/* Callout */
+.callout {
+  background: var(--accent-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 6px 6px 0;
+  padding: 0.85rem 1rem;
+  margin: 1rem 0;
+  font-size: 0.92rem;
+}
+.callout strong { color: var(--accent); }
+
+.divider {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 3rem 0;
+}
+</style>
+
+<div class="wrapper">
+
+<h1 class="page-title">MS Forms Automation &mdash; Project Guide</h1>
+<p class="page-subtitle">A complete walkthrough of both automation projects: what each file does, how data flows through the system, and how to run everything.</p>
+
+<nav class="toc">
+  <h2>Contents</h2>
+  <ol>
+    <li><a href="#p1">Project 1: ms-forms-automation</a>
+      <ol class="sub">
+        <li><a href="#p1-what">What it does</a></li>
+        <li><a href="#p1-files">File structure</a></li>
+        <li><a href="#p1-csv">CSV template format</a></li>
+        <li><a href="#p1-flow">How the logic flows</a></li>
+        <li><a href="#p1-builder">Form builder internals</a></li>
+        <li><a href="#p1-tester">Form tester internals</a></li>
+        <li><a href="#p1-server">Web server</a></li>
+        <li><a href="#p1-tests">Tests</a></li>
+        <li><a href="#p1-run">How to run</a></li>
+      </ol>
+    </li>
+    <li><a href="#p2">Project 2: import-button-automation</a>
+      <ol class="sub">
+        <li><a href="#p2-what">What it does</a></li>
+        <li><a href="#p2-files">File structure</a></li>
+        <li><a href="#p2-flow">How the logic flows</a></li>
+        <li><a href="#p2-steps">The four-step dialog sequence</a></li>
+        <li><a href="#p2-run">How to run</a></li>
+      </ol>
+    </li>
+    <li><a href="#shared">Shared concepts</a></li>
+  </ol>
+</nav>
+
+<!-- ========== PROJECT 1 ========== -->
+<div class="project-header" id="p1">
+  <span class="project-num">1</span>
+  <h1>ms-forms-automation</h1>
+</div>
+
+<h2 id="p1-what">What it does</h2>
+<p>This is the main project. It takes a <strong>CSV file</strong> describing a form (questions, types, options, validations, branching rules) and <strong>builds a real Microsoft Form</strong> by automating the browser. It can also <strong>test</strong> the form it just built &mdash; filling in every field and submitting.</p>
+
+<div class="flow">
+  <span class="flow-step">CSV file</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Parse &amp; validate</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Open MS Forms in Edge</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Add questions one by one</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Set restrictions &amp; branching</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Test by filling &amp; submitting</span>
+</div>
+
+<h2 id="p1-files">File structure</h2>
+<div class="file-tree">
+<span class="dir">ms-forms-automation/</span>
+  <span class="dir">builder/</span>
+    FormEditorPage.ts      <span class="comment">&larr; builds the form in MS Forms editor</span>
+    BranchConfigurator.ts  <span class="comment">&larr; sets up branching rules between sections</span>
+  <span class="dir">csv/</span>
+    csvParser.ts           <span class="comment">&larr; reads CSV into FormField objects</span>
+    csvValidator.ts        <span class="comment">&larr; validates CSV structure and field types</span>
+    branchResolver.ts      <span class="comment">&larr; parses branching rules from CSV</span>
+  <span class="dir">tester/</span>
+    FormResponsePage.ts    <span class="comment">&larr; fills and submits form responses</span>
+  <span class="dir">fixtures/</span>
+    formFixture.ts         <span class="comment">&larr; Playwright fixtures (editorPage, responsePage, template)</span>
+    browserSetup.ts        <span class="comment">&larr; persistent Edge browser context</span>
+  <span class="dir">tests/</span>
+    buildOnly.spec.ts      <span class="comment">&larr; builds a form from CSV (no testing)</span>
+    testExisting.spec.ts   <span class="comment">&larr; tests an already-built form</span>
+    <span class="dir">e2e/</span>
+      happyPath.spec.ts    <span class="comment">&larr; full build + fill + submit</span>
+    <span class="dir">functional/</span>
+      inputTypes.spec.ts   <span class="comment">&larr; per-field-type testing</span>
+    <span class="dir">smoke/</span>
+      formLoads.spec.ts    <span class="comment">&larr; verify MS Forms loads</span>
+      formLoadPerf.spec.ts <span class="comment">&larr; measure load time</span>
+  <span class="dir">samples/</span>
+    customer_feedback.csv  <span class="comment">&larr; example CSV templates</span>
+    debug_branching.csv
+    multipage_survey.csv
+    simple_text.csv
+    workshop_entry.csv
+    medical_checkup.csv
+  <span class="dir">docs/</span>
+    project-presentation.html
+    Presentation_Script_and_QA.docx
+  server.ts                <span class="comment">&larr; web UI for CSV upload</span>
+  playwright.config.ts     <span class="comment">&larr; test runner config</span>
+  package.json
+  tsconfig.json
+</div>
+
+<h2 id="p1-csv">CSV template format</h2>
+<p>Every form starts as a CSV file. Each row is one question. The columns tell the automation what kind of question to create and how to configure it.</p>
+
+<div style="overflow-x:auto">
+<table>
+  <thead>
+    <tr><th>Column</th><th>Purpose</th><th>Example</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><code>title</code></td><td>Form title (only the first row's value is used)</td><td>Customer Feedback Survey</td></tr>
+    <tr><td><code>label</code></td><td>Question text shown to the respondent</td><td>What is your name?</td></tr>
+    <tr><td><code>type</code></td><td>Question type</td><td>text, choice, rating, date, ranking, likert, nps, file_upload, section</td></tr>
+    <tr><td><code>required</code></td><td>Whether the field must be filled</td><td>true / false</td></tr>
+    <tr><td><code>options</code></td><td>Semicolon-separated list of options (for choice, ranking, likert)</td><td>Good;Average;Poor</td></tr>
+    <tr><td><code>restriction_type</code></td><td>Validation rule type</td><td>Length, Number, Min count, Max count</td></tr>
+    <tr><td><code>restriction_value</code></td><td>The constraint value(s)</td><td>10 (max length), 1-100 (range)</td></tr>
+    <tr><td><code>branch_condition</code></td><td>Branching: which option triggers a jump</td><td>Poor</td></tr>
+    <tr><td><code>branch_target</code></td><td>Which section to jump to</td><td>Section 3</td></tr>
+  </tbody>
+</table>
+</div>
+
+<p>The <code>type</code> column supports these question types:</p>
+<ul>
+  <li><code>text</code> &mdash; Short or long text answer</li>
+  <li><code>choice</code> &mdash; Radio buttons (single select) or checkboxes (if multiple allowed)</li>
+  <li><code>rating</code> &mdash; Star rating (1-5 or 1-10)</li>
+  <li><code>date</code> &mdash; Date picker</li>
+  <li><code>ranking</code> &mdash; Drag-to-rank a list of items</li>
+  <li><code>likert</code> &mdash; Matrix/grid of rating scales</li>
+  <li><code>nps</code> &mdash; Net Promoter Score (0-10 scale)</li>
+  <li><code>file_upload</code> &mdash; File attachment</li>
+  <li><code>section</code> &mdash; Section divider (starts a new page in the form)</li>
+</ul>
+
+<h2 id="p1-flow">How the logic flows</h2>
+<p>Here's the full pipeline from CSV to a working, tested form:</p>
+
+<h3>Step 1: Parse the CSV</h3>
+<div class="card">
+  <h4>csvParser.ts <span class="tag tag-lib">parser</span></h4>
+  <p>Reads the CSV file using the <code>csv-parse</code> library. Each row becomes a <code>FormField</code> object with properties like <code>label</code>, <code>type</code>, <code>options</code>, <code>required</code>, etc. The first row's <code>title</code> column becomes the form title.</p>
+</div>
+
+<h3>Step 2: Validate</h3>
+<div class="card">
+  <h4>csvValidator.ts <span class="tag tag-lib">validator</span></h4>
+  <p>Checks that every field has a valid <code>type</code>, that choice/ranking fields have options, that restriction types are recognized, and that branch targets reference existing sections. Catches errors before the browser even opens.</p>
+</div>
+
+<h3>Step 3: Resolve branching</h3>
+<div class="card">
+  <h4>branchResolver.ts <span class="tag tag-lib">branching</span></h4>
+  <p>Scans all fields for <code>branch_condition</code> and <code>branch_target</code>. Builds a map of branching rules: "if the user picks option X on question Y, jump to section Z". These rules get applied after all questions are created.</p>
+</div>
+
+<h3>Step 4: Build the form</h3>
+<div class="card">
+  <h4>FormEditorPage.ts <span class="tag tag-entry">builder</span></h4>
+  <p>This is the largest and most complex file. It drives the MS Forms editor using Playwright.</p>
+  <p>For each field in the parsed CSV, it:</p>
+  <ol>
+    <li>Clicks "Add new question" and selects the right type from the dropdown</li>
+    <li>Types the question label</li>
+    <li>Adds options if it's a choice/ranking/likert question</li>
+    <li>Sets it as required if <code>required: true</code></li>
+    <li>Configures restrictions (length limits, number ranges, etc.)</li>
+  </ol>
+  <p>Sections are added as dividers that create new pages in the form.</p>
+  <p>The form title is set via an <strong>API PATCH call</strong> (not by typing into the page) because the title field is not a regular contenteditable element.</p>
+</div>
+
+<h3>Step 5: Configure branching</h3>
+<div class="card">
+  <h4>BranchConfigurator.ts <span class="tag tag-lib">branching</span></h4>
+  <p>After all questions are built, this file opens the branching panel and configures each rule. For each branch rule, it clicks on the question, opens the branch settings, finds the option that matches the condition, and sets the "Go to" dropdown to the target section.</p>
+</div>
+
+<h3>Step 6: Test the form</h3>
+<div class="card">
+  <h4>FormResponsePage.ts <span class="tag tag-entry">tester</span></h4>
+  <p>Opens the form's response URL (the public-facing form) and fills every question. It works page by page: scans all visible questions on the current page, fills each one, then clicks "Next" until it reaches the "Submit" button. After submitting, it verifies the confirmation message appears.</p>
+</div>
+
+<h2 id="p1-builder">Form builder internals</h2>
+<p><code>FormEditorPage.ts</code> is the heart of the project. Here are the key pieces:</p>
+
+<h3>Question type adders</h3>
+<p>Each question type has its own method: <code>addTextQuestion()</code>, <code>addChoiceQuestion()</code>, <code>addRatingQuestion()</code>, <code>addDateQuestion()</code>, <code>addRankingQuestion()</code>, <code>addLikertQuestion()</code>, <code>addNpsQuestion()</code>, <code>addFileUploadQuestion()</code>, and <code>addSection()</code>. They all follow the same pattern: click "Add new" &rarr; select type &rarr; enter label &rarr; configure type-specific settings.</p>
+
+<h3>Title via API</h3>
+<p>MS Forms' title is not a regular text input &mdash; it's rendered by a React component that doesn't respond to normal typing. Instead, the builder captures the authentication headers from the browser's network requests, then sends an HTTP PATCH to the Forms API to set the title directly.</p>
+
+<h3>Restrictions</h3>
+<p>For questions with validation rules (like "max 100 characters" or "number between 1 and 10"), the builder opens the question's menu (&hellip;), clicks "Restrictions", selects the restriction type from a dropdown, and fills in the value.</p>
+
+<h3>Selector strategy</h3>
+<p>MS Forms uses <code>data-automation-id</code> attributes on many elements, which are stable across updates. The builder prefers these over CSS classes. Key selectors:</p>
+<ul>
+  <li><code>[data-automation-id="addQuestionButton"]</code> &mdash; "Add new question" button</li>
+  <li><code>[data-automation-id="questionItem"]</code> &mdash; a question container</li>
+  <li><code>[data-automation-id="textInput"]</code> &mdash; text input field in response form</li>
+</ul>
+
+<h2 id="p1-tester">Form tester internals</h2>
+<p><code>FormResponsePage.ts</code> fills forms using a page-scanning approach rather than iterating CSV fields. This is important because form labels on the page might not exactly match the CSV label text.</p>
+
+<h3>Page-by-page scanning</h3>
+<p>The tester works through the form one page at a time:</p>
+<ol>
+  <li>Find all visible question containers on the current page</li>
+  <li>For each container, try to match it to a CSV field by label text</li>
+  <li>If matched, use the CSV field's test data. If not, detect the input type and fill generically</li>
+  <li>Click "Next" to advance to the next page</li>
+  <li>Repeat until the "Submit" button appears</li>
+</ol>
+
+<h3>Generic field detection</h3>
+<p>When a question doesn't match any CSV field, the tester detects the input type by checking what DOM elements exist in the container:</p>
+<ul>
+  <li>Has <code>[data-automation-id="textInput"]</code>? &rarr; Fill with "Test response"</li>
+  <li>Has <code>[role="radio"][aria-label*="Star"]</code>? &rarr; Click the 4th star</li>
+  <li>Has <code>input[type="radio"]</code>? &rarr; Click the first radio button</li>
+  <li>Has <code>input[type="checkbox"]</code>? &rarr; Check the first checkbox</li>
+  <li>Has a combobox? &rarr; Open dropdown and select first option</li>
+</ul>
+
+<h3>Rating stars</h3>
+<p>Rating fields are tricky. Stars are rendered as <code>&lt;span role="radio" aria-label="4 Star"&gt;</code> with SVG inside. The tester uses <code>click({ force: true })</code> because the SVG overlay can intercept normal clicks.</p>
+
+<h2 id="p1-server">Web server</h2>
+<div class="card">
+  <h4>server.ts <span class="tag tag-entry">entry point</span></h4>
+  <p>A simple HTTP server that provides a web UI for uploading CSV files. Upload a CSV through the browser, and it kicks off the full pipeline (parse &rarr; validate &rarr; build &rarr; optionally test). The server shows real-time status updates while the form is being built.</p>
+  <p>Routes:</p>
+  <ul>
+    <li><code>GET /</code> &mdash; Upload page (HTML form)</li>
+    <li><code>POST /upload</code> &mdash; Start building a form from the uploaded CSV</li>
+    <li><code>GET /status/:jobId</code> &mdash; Poll for build progress</li>
+  </ul>
+</div>
+
+<h2 id="p1-tests">Tests</h2>
+<p>All tests use Playwright with a persistent Edge browser context (so the MS Forms login session is reused).</p>
+
+<div class="card">
+  <h4>smoke/formLoads.spec.ts <span class="tag tag-test">smoke</span></h4>
+  <p>Verifies that MS Forms loads and the user is logged in. The most basic health check.</p>
+</div>
+
+<div class="card">
+  <h4>buildOnly.spec.ts <span class="tag tag-test">build</span></h4>
+  <p>Builds a form from a CSV without testing it. Set <code>CSV_FILE</code> env var to specify which template.</p>
+  <p><code>CSV_FILE=samples/customer_feedback.csv npx playwright test tests/buildOnly.spec.ts</code></p>
+</div>
+
+<div class="card">
+  <h4>testExisting.spec.ts <span class="tag tag-test">test</span></h4>
+  <p>Tests a form that already exists. Set <code>RESPONSE_URL</code> to the form's public URL. Fills every field and submits.</p>
+  <p><code>RESPONSE_URL=https://forms.cloud.microsoft/... npx playwright test tests/testExisting.spec.ts</code></p>
+</div>
+
+<div class="card">
+  <h4>e2e/happyPath.spec.ts <span class="tag tag-test">e2e</span></h4>
+  <p>The full pipeline: builds a form from CSV, then fills and submits it. Proves the entire system works end to end.</p>
+</div>
+
+<div class="card">
+  <h4>functional/inputTypes.spec.ts <span class="tag tag-test">functional</span></h4>
+  <p>Tests each field type individually on an existing form. Verifies that text, choice, rating, date, etc. can all be filled correctly.</p>
+</div>
+
+<h2 id="p1-run">How to run</h2>
+
+<p><strong>First-time setup:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">cd ms-forms-automation<br>npm install<br>npx playwright install</span></div>
+
+<p><strong>First run &mdash; log into MS Forms:</strong> The first time you run anything, a browser window opens and you'll need to log into your Microsoft account. After that, the session is saved in a persistent browser profile and reused automatically.</p>
+
+<p><strong>Build a form from CSV:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">CSV_FILE=samples/customer_feedback.csv npx playwright test tests/buildOnly.spec.ts</span></div>
+
+<p><strong>Test an existing form:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">RESPONSE_URL=https://forms.cloud.microsoft/... npx playwright test tests/testExisting.spec.ts</span></div>
+
+<p><strong>Full end-to-end (build + test):</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">CSV_FILE=samples/customer_feedback.csv npx playwright test tests/e2e/happyPath.spec.ts</span></div>
+
+<p><strong>Web UI (upload CSV through browser):</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx tsx server.ts</span></div>
+<p>Then open <code>http://localhost:3000</code> in your browser.</p>
+
+<p><strong>Run all tests:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx playwright test</span></div>
+
+<hr class="divider">
+
+<!-- ========== PROJECT 2 ========== -->
+<div class="project-header" id="p2">
+  <span class="project-num">2</span>
+  <h1>import-button-automation</h1>
+</div>
+
+<h2 id="p2-what">What it does</h2>
+<p>This project automates the <strong>"Quick Import"</strong> feature in MS Forms. Instead of defining forms via CSV, you give it a <strong>Word document or PDF</strong> that contains survey questions, and MS Forms' AI converts it into a live form automatically. This automation handles all the UI clicks needed to make that happen.</p>
+
+<div class="flow">
+  <span class="flow-step">Word/PDF file</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Click Quick Import</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Upload file</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Select "Form" type</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Wait for AI conversion</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Click "Start review"</span>
+  <span class="flow-arrow">&rarr;</span>
+  <span class="flow-step">Form editor opens in new tab</span>
+</div>
+
+<h2 id="p2-files">File structure</h2>
+<div class="file-tree">
+<span class="dir">import-button-automation/</span>
+  <span class="dir">src/</span>
+    config.ts              <span class="comment">&larr; URLs, selectors, timeouts</span>
+    importForm.ts          <span class="comment">&larr; main entry point</span>
+  <span class="dir">tests/</span>
+    quickImport.spec.ts    <span class="comment">&larr; Playwright test for the import flow</span>
+  <span class="dir">samples/</span>
+    employee_satisfaction_survey.docx  <span class="comment">&larr; sample Word file</span>
+    employee_satisfaction_survey.pdf   <span class="comment">&larr; sample PDF file</span>
+  create-sample-docs.py    <span class="comment">&larr; generates the sample files</span>
+  playwright.config.ts
+  package.json
+  tsconfig.json
+</div>
+
+<h3>File details</h3>
+
+<div class="card">
+  <h4>src/config.ts <span class="tag tag-config">config</span></h4>
+  <p>Central configuration. Defines the MS Forms URL, path to the persistent browser profile (so login is remembered), all CSS selectors used, and timeout values.</p>
+</div>
+
+<div class="card">
+  <h4>src/importForm.ts <span class="tag tag-entry">entry</span></h4>
+  <p>The main script. Contains 4 functions called in sequence: <code>navigateToForms()</code>, <code>uploadViaQuickImport()</code>, <code>selectFormType()</code>, and <code>waitForConversionAndStartReview()</code>. Browser stays open after completion so you can review the result.</p>
+</div>
+
+<div class="card">
+  <h4>create-sample-docs.py <span class="tag tag-lib">generator</span></h4>
+  <p>Python script that generates a 7-question "Employee Satisfaction Survey" in both PDF and DOCX formats. Questions are structured so MS Forms' AI can parse them: numbered, with bullet-point options for multiple-choice questions and blank lines for text fields.</p>
+</div>
+
+<div class="card">
+  <h4>tests/quickImport.spec.ts <span class="tag tag-test">test</span></h4>
+  <p>Two tests: a smoke test that the Quick Import button exists, and an end-to-end test that imports a file and verifies the editor opens. The e2e test requires the <code>IMPORT_FILE</code> environment variable.</p>
+</div>
+
+<h2 id="p2-flow">How the logic flows</h2>
+
+<p>The <code>importForm.ts</code> script has 4 main functions that run in sequence:</p>
+
+<h3>1. navigateToForms(page)</h3>
+<p>Opens <code>https://forms.cloud.microsoft/Pages/DesignPagev2.aspx</code> in the persistent Edge browser. Uses <code>domcontentloaded</code> instead of <code>networkidle</code> because MS Forms has background telemetry requests that never stop, causing <code>networkidle</code> to always time out. Handles login redirects if the session expired.</p>
+
+<h3>2. uploadViaQuickImport(page, filePath)</h3>
+<p>Gets the file into MS Forms using a multi-strategy approach:</p>
+<ol>
+  <li><strong>Strategy 1:</strong> Click the Quick Import button, listen for a <code>filechooser</code> event. (Doesn't work &mdash; the button opens a popover, not a file dialog.)</li>
+  <li><strong>Strategy 2:</strong> Inside the popover, find and click "Upload from this device". <em>This</em> triggers the file dialog. Upload through the <code>filechooser</code> event. <strong>This is the path that works.</strong></li>
+  <li><strong>Strategy 3:</strong> Fall back to finding a hidden <code>&lt;input type="file"&gt;</code> and setting files on it directly.</li>
+  <li><strong>Strategy 4:</strong> Take a screenshot for debugging and throw an error.</li>
+</ol>
+
+<h3>3. selectFormType(page)</h3>
+<p>After the file uploads, MS Forms shows a dialog: <strong>"Import my file as"</strong> with two cards &mdash; "Form" and "Quiz". This function clicks the "Form" card (identified by its text "Collect quick survey or form responses").</p>
+
+<h3>4. waitForConversionAndStartReview(page)</h3>
+<p>MS Forms' AI now converts the document. A progress dialog shows "Converting [filename] to Microsoft Forms... 1 minute left to finish conversion". This function waits up to 2 minutes for the <strong>"Start review"</strong> button to appear.</p>
+
+<div class="callout">
+  <strong>Key detail:</strong> "Start review" opens the form editor in a <strong>new browser tab</strong>. The original tab stays on the MS Forms homepage. The script captures the new tab using <code>context.waitForEvent('page')</code> and reads the editor URL and form ID from it.
+</div>
+
+<h2 id="p2-steps">The four-step dialog sequence</h2>
+<p>This is the sequence of dialogs that appear after clicking Quick Import. Understanding this is key to understanding why the automation needed all four functions:</p>
+
+<div class="card">
+  <h4>Dialog 1: Quick Import popover</h4>
+  <p>Shows "Upload from this device" and a file size limit notice. Clicking "Upload from this device" opens the native file chooser.</p>
+</div>
+<div class="card">
+  <h4>Dialog 2: "Import my file as"</h4>
+  <p>Two cards: <strong>Form</strong> ("Collect quick survey or form responses") and <strong>Quiz</strong> ("Enable automatic grading for easy assessment"). The automation clicks Form.</p>
+</div>
+<div class="card">
+  <h4>Dialog 3: Conversion progress</h4>
+  <p>Shows a Word icon &rarr; Forms icon animation, "Converting [file] to Microsoft Forms...", and a time estimate. Has a Cancel button. Takes 10-30 seconds typically.</p>
+</div>
+<div class="card">
+  <h4>Dialog 4: Conversion complete</h4>
+  <p>Shows "Your form has been converted successfully" with two buttons: "Import another" and <strong>"Start review"</strong>. Clicking "Start review" opens the form editor in a new tab.</p>
+</div>
+
+<h2 id="p2-run">How to run</h2>
+
+<p><strong>First-time setup:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">cd import-button-automation<br>npm install<br>npx playwright install</span></div>
+
+<p><strong>Import a Word document:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx tsx src/importForm.ts samples/employee_satisfaction_survey.docx</span></div>
+
+<p><strong>Import a PDF:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx tsx src/importForm.ts samples/employee_satisfaction_survey.pdf</span></div>
+
+<p><strong>Import any file:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx tsx src/importForm.ts "C:\path\to\your\survey.docx"</span></div>
+
+<p><strong>Generate new sample files</strong> (requires Python with fpdf and python-docx):</p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">pip install fpdf2 python-docx<br>python create-sample-docs.py</span></div>
+
+<p><strong>Run tests:</strong></p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">npx playwright test</span></div>
+<p>The e2e import test requires <code>IMPORT_FILE</code> env var:</p>
+<div class="cmd"><span class="cmd-prompt">$</span><span class="cmd-text">IMPORT_FILE=samples/employee_satisfaction_survey.docx npx playwright test</span></div>
+
+<hr class="divider">
+
+<!-- ========== SHARED CONCEPTS ========== -->
+<div class="project-header" id="shared">
+  <span class="project-num">+</span>
+  <h1>Shared concepts</h1>
+</div>
+
+<h2>Persistent browser profile</h2>
+<p>Both projects use Playwright's <code>launchPersistentContext()</code> with a profile directory stored in <code>%LOCALAPPDATA%/ms_forms_automation/browser_profile</code>. This means:</p>
+<ul>
+  <li>You log into Microsoft <strong>once</strong> on the first run</li>
+  <li>Every subsequent run reuses that session automatically</li>
+  <li>If the session expires, the scripts detect the login redirect and wait for you to log in again</li>
+</ul>
+
+<h2>Why Edge, not Chrome?</h2>
+<p>MS Forms works best in Microsoft Edge (it's a Microsoft product). Both projects launch Edge specifically with <code>channel: 'msedge'</code>. The <code>--disable-blink-features=AutomationControlled</code> flag prevents MS Forms from detecting the browser is automated.</p>
+
+<h2>domcontentloaded vs networkidle</h2>
+<p>MS Forms has persistent background network requests (telemetry, WebSocket connections) that <em>never</em> stop. Using Playwright's <code>networkidle</code> wait strategy causes timeouts because the page never becomes "idle". Both projects use <code>domcontentloaded</code> and then wait for specific UI elements to appear instead.</p>
+
+<h2>Selector fragility</h2>
+<p>MS Forms is a React application. CSS class names (like <code>css-369</code>) change between deployments. The automation relies on more stable selectors:</p>
+<ul>
+  <li><code>data-automation-id</code> attributes (most reliable)</li>
+  <li><code>aria-label</code> values (fairly stable)</li>
+  <li><code>role</code> attributes (stable)</li>
+  <li>Text content matching (last resort)</li>
+</ul>
+<p>If MS Forms updates their UI, the <code>data-automation-id</code> selectors are the least likely to break.</p>
+
+<h2>Both projects at a glance</h2>
+<div style="overflow-x:auto">
+<table>
+  <thead>
+    <tr><th></th><th>ms-forms-automation</th><th>import-button-automation</th></tr>
+  </thead>
+  <tbody>
+    <tr><td><strong>Input</strong></td><td>CSV file with field definitions</td><td>Word (.docx) or PDF file</td></tr>
+    <tr><td><strong>How form is created</strong></td><td>Clicks through the editor UI, adding each question manually</td><td>MS Forms AI converts the document</td></tr>
+    <tr><td><strong>Control over form</strong></td><td>Full &mdash; question types, options, restrictions, branching</td><td>Limited &mdash; AI decides question types</td></tr>
+    <tr><td><strong>Can test forms?</strong></td><td>Yes &mdash; fills and submits automatically</td><td>No &mdash; only creates the form</td></tr>
+    <tr><td><strong>Best for</strong></td><td>Precise, repeatable forms with specific validations</td><td>Quick form creation from existing documents</td></tr>
+    <tr><td><strong>Browser</strong></td><td>Edge (persistent profile)</td><td>Edge (persistent profile)</td></tr>
+    <tr><td><strong>Tech stack</strong></td><td>TypeScript, Playwright, csv-parse</td><td>TypeScript, Playwright</td></tr>
+  </tbody>
+</table>
+</div>
+
+</div>

@@ -1,0 +1,25 @@
+{
+  "name": "ms-forms-automation",
+  "version": "1.0.0",
+  "description": "Create and test Microsoft Forms from CSV templates using Playwright",
+  "scripts": {
+    "start": "npx tsx server.ts",
+    "build": "npx playwright test tests/buildOnly.spec.ts",
+    "build:test": "npx playwright test tests/e2e/happyPath.spec.ts",
+    "test:existing": "npx playwright test tests/testExisting.spec.ts",
+    "test": "npx playwright test",
+    "report": "npx playwright show-report",
+    "typecheck": "tsc --noEmit",
+    "mcp": "npx tsx mcp/formTestServer.ts"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^22.10.0",
+    "csv-parse": "^5.6.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.6.3"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.2"
+  }
+}

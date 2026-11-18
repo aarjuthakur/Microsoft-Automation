@@ -1,0 +1,3 @@
+Form Title,Debug Restrictions Test
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Test Section,Text (Short Answer),Min 2 chars,Your Name,Yes,,

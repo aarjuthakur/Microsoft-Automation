@@ -1,0 +1,14 @@
+Form Title,Medical Checkup Intake Form
+Page,Section Title,Form Type,Validation,Question,Required,Options,Branch Condition
+1,Patient Information,Text (Short Answer),Min 2 chars,Patient Full Name,Yes,,
+1,Patient Information,Date Picker,,Date of Birth,Yes,,
+1,Patient Information,Multiple Choice,,Gender,Yes,Male|Female|Non-binary|Prefer not to say,
+1,Patient Information,Number Input,,Emergency Contact Number,Yes,,
+1,Patient Information,Email Input,Valid email,Email Address,Yes,,
+1,Medical Details,Dropdown List,,Blood Type,No,A+|A-|B+|B-|AB+|AB-|O+|O-|Unknown,
+1,Medical Details,Checkboxes,,Current Symptoms,No,Headache|Fever|Cough|Fatigue|Body Pain|None,
+1,Medical Details,Multiple Choice,,Do you have any allergies?,Yes,Yes|No,
+1,Medical Details,Paragraph Text (Long),,List your current medications,No,,
+1,Medical Details,Likert Scale,,Rate your current health,Yes,Physical Health|Mental Health|Sleep Quality|Energy Level,
+1,Medical Details,File Upload,,Upload previous medical records,No,,
+1,Medical Details,Paragraph Text (Long),,Additional notes for the doctor,No,,
